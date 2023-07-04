@@ -1,0 +1,27 @@
+---
+- name: Install and configure DHCP server
+  hosts: customer
+  become: true
+
+  tasks:
+    - name: Install DHCP server packages
+      ansible.builtin.package: dhcp
+
+    - name: Copy DHCP server configuration file
+      template:
+        src: dhcpd.conf.j2
+        dest: /etc/dhcp/dhcpd.conf
+      notify:
+        - restart dhcpd
+
+    - name: Enable and start DHCP service
+      service:
+        name: dhcpd
+        state: started
+        enabled: true
+
+  handlers:
+    - name: restart dhcpd
+      service:
+        name: dhcpd
+        state: restarted
