@@ -1,7 +1,7 @@
 ---
 - name: Apache server installed
   hosts: node1
-  become: true
+  become: yes
   tasks:
   - name: latest Apache version installed
     ansible.builtin.package:

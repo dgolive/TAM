@@ -1,0 +1,25 @@
+---
+- name: Remove Apache server
+  hosts: node1
+  become: true
+  gather_facts: false
+  ignore_errors: true
+  tasks:
+    - name: Stopping Services
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: stopped
+        enabled: true
+      loop:
+        - httpd
+        - dhcpd
+    - name: Remove dependencies (packages)
+      ansible.builtin.package:
+        name:
+          - httpd
+          - dhcpd
+        state: absent  
+    - name: Remove files
+      ansible.builtin.file:
+        path: /var/www/html/index.html
+        state: absent
