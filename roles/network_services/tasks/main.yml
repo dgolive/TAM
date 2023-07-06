@@ -1,15 +1,45 @@
 ---
 # tasks file for roles/network_services
-- name: Install DHCP server packages
-  ansible.builtin.package: dhcp
-- name: Copy DHCP server configuration file
-  template:
+- name: DHCP service install
+  tags: install
+  ansible.builtin.package:
+    name: dhcp-server
+    state: present
+
+- name: Copy CSV file to the DHCP server
+  tags: copy_csv
+  ansible.builtin.copy:
+    src: files/hosts.csv
+    dest: /etc/dhcp/hosts.csv
+    setype: httpd_sys_content_t
+  notify:
+    - Restart_dhcpd  
+
+- name: Read CSV file
+  tags: csv_file
+  ansible.builtin.read_csv:
+    path: /etc/dhcp/hosts.csv
+    delimiter: ','
+  register: csv_data
+
+- name: Process CSV data
+  ansible.builtin.debug:
+    var: csv_data.list
+  loop: "{{ csv_data.list }}"
+
+- name: Configure DHCP server
+  tags: configuration
+  ansible.builtin.template:
     src: dhcpd.conf.j2
     dest: /etc/dhcp/dhcpd.conf
   notify:
-    - Restart_dhcpd
-- name: Enable and start DHCP service
-  service:
+    - Restart_dhcpd   
+
+- name: DHCP server service enabled and running
+  tags: service
+  ansible.builtin.service:
     name: dhcpd
-    state: started
     enabled: true
+    state: started
+  notify:
+    - Restart_dhcpd

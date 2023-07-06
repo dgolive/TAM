@@ -2,5 +2,6 @@
 - name: DHCP Server Install and Configuration
   hosts: node1
   become: true
+  gather_facts: false
   roles:
     - network_services

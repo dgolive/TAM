@@ -1,0 +1,4 @@
+hostname,ip_address,mac_address
+host001,192.168.15.222,aa:bb:cc:dd:ee:f1
+host002,192.168.15.223,aa:bb:cc:dd:ee:f2
+host003,192.168.15.224,aa:bb:cc:dd:ee:f3
