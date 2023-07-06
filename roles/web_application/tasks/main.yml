@@ -1,0 +1,19 @@
+---
+# tasks file for roles/web_application
+- name: Apache service install
+  ansible.builtin.package:
+    name: httpd
+    state: present
+- name: Apache service enabled and running
+  ansible.builtin.service:
+    name: httpd
+    enabled: true
+    state: started
+  notify:
+    - restart_httpd
+- name: Copy Index Page file to root Folder
+  ansible.builtin.copy:
+    src: "{{ web_application_src_path }}"
+    dest: "{{ web_application_dst_path }}"
+  notify:
+    - restart_httpd
