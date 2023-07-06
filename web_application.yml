@@ -1,5 +1,5 @@
 ---
-- name: Apache server installed
+- name: Web Application Deployment
   hosts: node1
   become: true
   roles:

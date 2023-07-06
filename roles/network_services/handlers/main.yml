@@ -1,2 +1,6 @@
 ---
 # handlers file for roles/network_services
+- name: Restart_dhcpd
+  ansible.builtin.service:
+    name: dhcpd
+    state: restarted

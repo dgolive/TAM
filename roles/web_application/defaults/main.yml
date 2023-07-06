@@ -2,3 +2,4 @@
 # defaults file for roles/web_application
 web_application_src_path: files/index.html
 web_application_dst_path: /var/www/html/index.html
+apache_work_directory: /var/www/html/

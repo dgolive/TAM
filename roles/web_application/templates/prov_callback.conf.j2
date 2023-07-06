@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+<VirtualHost *:80>
+  ServerName provisioning-callback.example.com
+
+  <Location /callback>
+    SetHandler provisioning-callback
+  </Location>
+</VirtualHost>
