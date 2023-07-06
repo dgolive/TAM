@@ -16,4 +16,13 @@
     src: "{{ web_application_src_path }}"
     dest: "{{ web_application_dst_path }}"
   notify:
-    - restart_httpd
+    - Restart_httpd
+- name: Copy Apache Configuration file
+  ansible.builtin.template:
+    src: httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart_httpd  

@@ -1,8 +1,0 @@
----
-- name: Trigger TAM Roles Playbooks
-#   hosts: node1
-#   become: true
-#   roles:
-#     - web-application
-  import_playbook: web-application.yml
-  

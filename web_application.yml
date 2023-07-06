@@ -3,4 +3,4 @@
   hosts: node1
   become: true
   roles:
-    - web-application 
+    - web_application

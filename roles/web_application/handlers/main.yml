@@ -1,6 +1,6 @@
 ---
 # handlers file for roles/web_application
-- name: restart_httpd
+- name: Restart_httpd
   ansible.builtin.service:
     name: httpd
     state: restarted
