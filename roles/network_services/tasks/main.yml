@@ -1,2 +1,15 @@
 ---
 # tasks file for roles/network_services
+- name: Install DHCP server packages
+  ansible.builtin.package: dhcp
+- name: Copy DHCP server configuration file
+  template:
+    src: dhcpd.conf.j2
+    dest: /etc/dhcp/dhcpd.conf
+  notify:
+    - Restart_dhcpd
+- name: Enable and start DHCP service
+  service:
+    name: dhcpd
+    state: started
+    enabled: true

@@ -1,23 +1,35 @@
 ---
 # tasks file for roles/web_application
 - name: Apache service install
+  tags: install
   ansible.builtin.package:
     name: httpd
     state: present
-- name: Apache service enabled and running
-  ansible.builtin.service:
-    name: httpd
-    enabled: true
-    state: started
-  notify:
-    - restart_httpd
 - name: Copy Index Page file to root Folder
+  tags: copy_index
   ansible.builtin.copy:
     src: "{{ web_application_src_path }}"
-    dest: "{{ web_application_dst_path }}"
+    dest: /root/index.html
+    owner: apache
+    group: apache
+    mode: 0644
+    setype: httpd_sys_content_t
   notify:
     - Restart_httpd
-- name: Copy Apache Configuration file
+- name: Copy Index Page file from root to Apache
+  tags: copy_index_apache
+  ansible.builtin.copy:
+    src: /root/index.html
+    dest: /var/www/html/index.html
+    owner: apache
+    group: apache
+    mode: 0644
+    setype: httpd_sys_content_t
+    remote_src: true
+  notify:
+    - Restart_httpd    
+- name: Apache Configuration file
+  tags: configuration
   ansible.builtin.template:
     src: httpd.conf.j2
     dest: /etc/httpd/conf/httpd.conf
@@ -25,4 +37,22 @@
     group: root
     mode: 0644
   notify:
-    - Restart_httpd  
+    - Restart_httpd
+- name: Provisioning Callback
+  tags: callback
+  ansible.builtin.template:
+    src: prov_callback.conf.j2
+    dest: /etc/httpd/conf/prov_callback.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart_httpd    
+- name: Apache service enabled and running
+  tags: service
+  ansible.builtin.service:
+    name: httpd
+    enabled: true
+    state: started
+  notify:
+    - Restart_httpd
