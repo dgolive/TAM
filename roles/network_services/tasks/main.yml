@@ -17,12 +17,13 @@
 
 - name: Read CSV file
   tags: csv_file
-  ansible.builtin.read_csv:
+  read_csv:
     path: /etc/dhcp/hosts.csv
     delimiter: ','
   register: csv_data
 
 - name: Process CSV data
+  tags: process_csv
   ansible.builtin.debug:
     var: csv_data.list
   loop: "{{ csv_data.list }}"
