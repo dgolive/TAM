@@ -1,7 +1,10 @@
 ---
 # defaults file for roles/network_services
-network_services_src_path: files/hosts.csv
-network_services_dst_path: /etc/dhcp/
+network_services_csv_src_path: files/hosts.csv
+network_services_csv_dst_path: /etc/dhcp/hosts.csv
+
+network_services_templ_src: dhcpd.conf.j2
+network_services_templ_dst: /etc/dhcp/dhcpd.conf
 
 dhcp_subnet: 192.168.15.0
 dhcp_subnet_mask: 255.255.255.0

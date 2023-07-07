@@ -9,7 +9,7 @@
   tags: copy_index
   ansible.builtin.copy:
     src: "{{ web_application_src_path }}"
-    dest: /root/index.html
+    dest: "{{ web_application_root_path }}"
     owner: apache
     group: apache
     mode: 0644
@@ -19,8 +19,8 @@
 - name: Copy Index Page file from root to Apache
   tags: copy_index_apache
   ansible.builtin.copy:
-    src: /root/index.html
-    dest: /var/www/html/index.html
+    src: "{{ web_application_root_path }}"
+    dest: "{{ web_application_dst_path }}"
     owner: apache
     group: apache
     mode: 0644
@@ -31,8 +31,8 @@
 - name: Apache Configuration file
   tags: configuration
   ansible.builtin.template:
-    src: httpd.conf.j2
-    dest: /etc/httpd/conf/httpd.conf
+    src: "{{ web_application_templ_src }}"
+    dest: "{{ web_application_templ_dst }}"
     owner: root
     group: root
     mode: 0644

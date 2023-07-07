@@ -9,16 +9,16 @@
 - name: Copy CSV file to the DHCP server
   tags: copy_csv
   ansible.builtin.copy:
-    src: files/hosts.csv
-    dest: /etc/dhcp/hosts.csv
+    src: "{{ network_services_csv_src_path }}"
+    dest: "{{ network_services_csv_dst_path }}"
     setype: httpd_sys_content_t
   notify:
     - Restart_dhcpd  
 
 - name: Read CSV file
   tags: csv_file
-  read_csv:
-    path: /etc/dhcp/hosts.csv
+  ansible.builtin.read_csv:
+    path: "{{ network_services_csv_dst_path }}"
     delimiter: ','
   register: csv_data
 
@@ -31,8 +31,8 @@
 - name: Configure DHCP server
   tags: configuration
   ansible.builtin.template:
-    src: dhcpd.conf.j2
-    dest: /etc/dhcp/dhcpd.conf
+    src: "{{ network_services_templ_src }}"
+    dest: "{{ network_services_templ_dst }}"
   notify:
     - Restart_dhcpd   
 
