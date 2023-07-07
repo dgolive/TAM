@@ -18,8 +18,14 @@
         name:
           - httpd
           - dhcpd
-        state: absent  
+        state: absent
     - name: Remove files
       ansible.builtin.file:
-        path: /var/www/html/index.html
+        path: |
+          /root/index.html
+          /var/www/html/index.html
+          /etc/httpd/conf/httpd.conf
+          /etc/httpd/conf/prov_callback.conf
+          /etc/dhcp/hosts.csv
+          /etc/dhcp/dhcpd.conf
         state: absent
